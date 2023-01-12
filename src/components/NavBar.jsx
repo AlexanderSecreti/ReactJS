@@ -7,16 +7,16 @@ const NavBar = () => {
     return (
         <>
         <nav className='containerNavBar'>
-            <Link to='/DigitalCelu/' className='iconNavBar'>
+            <Link to='/' className='iconNavBar'>
                 <AiFillPhone/>
                 DigitalCelu
             </Link>
             <div className='linkNavBar'>
-                    <Link to={'/DigitalCelu/'}>Inicio</Link>
-                    <Link to={'/DigitalCelu/category/Samsung/'}>Samsung</Link>
-                    <Link to={'/DigitalCelu/category/Motorola/'}>Motorola</Link>
-                    <Link to={'/DigitalCelu/category/Iphone/'}>Iphone</Link>
-                    <Link to={'/DigitalCelu/category/Tablet/'}>Tablet</Link>
+                    <Link to={'/'}>Inicio</Link>
+                    <Link to={'/category/Samsung/'}>Samsung</Link>
+                    <Link to={'/category/Motorola/'}>Motorola</Link>
+                    <Link to={'/category/Iphone/'}>Iphone</Link>
+                    <Link to={'/category/Tablet/'}>Tablet</Link>
             </div>
             <div>
             <CartWidget/>

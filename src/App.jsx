@@ -4,7 +4,8 @@ import NavBar from './components/NavBar'
 import Footer from './components/Footer'
 import ItemDetailContainer from './components/ItemDetailContainer'
 import { Route, Routes } from 'react-router-dom'
-import Icon from './components/Icon'
+import Cart from './components/Cart'
+import MyForm from './components/My Form'
 
 
 function App() {
@@ -12,9 +13,11 @@ function App() {
     <>
     <NavBar/>
     <Routes>
-      <Route path='/DigitalCelu/' element={<ItemListContainer greeting={"Item List Container"}/>} />
-      <Route path='/DigitalCelu/category/:id' element={<ItemListContainer greeting={"Item List Container"}/>} />
-      <Route path='/DigitalCelu/item/:id' element={<ItemDetailContainer/>} />
+      <Route path='/' element={<ItemListContainer greeting={"Item List Container"}/>} />
+      <Route path='/category/:id' element={<ItemListContainer greeting={"Item List Container"}/>} />
+      <Route path='/item/:id' element={<ItemDetailContainer/>} />
+      <Route path='/cart' element={<Cart/>} />
+      {<Route path='/form' element={<MyForm/>} />}
     </Routes>
     <Footer/>
     </>

@@ -1,34 +1,51 @@
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import { products } from '../mock/products'
+import { doc, getDoc, getFirestore } from 'firebase/firestore'
+import React, { useContext, useEffect, useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
+import { CartContext } from '../context/CartContext'
 import ItemCount from './ItemCount'
+import Loader from './Loader'
+
 const ItemDetailContainer = () => {
-    const [itemDetail, setItemDetail] = useState([])
+    const [itemDetail, setItemDetail] = useState({})
     useEffect(() => {
+        setLoading(true)
         getItemDetail()
-            .then(response => setItemDetail(response))
     }, [])
     const { id } = useParams()
-
-    const getItemDetail = () => {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve(products.find((item) => item.id === parseInt(id)))
-            }, 2000);
-        })
+    const [loading, setLoading] = useState(false)
+    const getItemDetail = async () => {
+        const db = getFirestore()
+        const docRef = doc(db, "productos", id)
+        const snapshot = await getDoc(docRef)
+        setTimeout(() => {
+            setItemDetail({ id: snapshot.id, ...snapshot.data() })
+            setLoading(false)
+        }, 2000);
     }
-
+    const [quantity, setquantity] = useState(0)
+    const { addToCart, cart } = useContext(CartContext)
+    const addHandler = (cantidad) => {
+        addToCart(itemDetail, cantidad)
+        setquantity(cantidad)
+    }
     return (
-        <>
-            <div className="itemCard">
-                <img className='itemcard_img'src={itemDetail.pictureUrl} alt={itemDetail.title} />
-                <h1>{itemDetail.id} - {itemDetail.title}</h1>
-                <p class="price">${itemDetail.price}</p>
-                <p>{itemDetail.description}</p>
-                <h4 >Stock: {itemDetail.stock}</h4>
-                <ItemCount stock={itemDetail.stock}/>
-            </div>
-        </>
+        <div className='item_datail'>
+            {loading ?
+                <div className='loader'><Loader /></div>
+                :
+                <div className="itemCard">
+                    <img className='itemcard_img' src={itemDetail.pictureUrl} alt={itemDetail.title} />
+                    <h1>{itemDetail.title}</h1>
+                    <p className="item_price">${itemDetail.price}</p>
+                    <p>{itemDetail.description}</p>
+                    <h4 >Stock: {itemDetail.stock}</h4>
+                    {quantity === 0 ?
+                        <ItemCount stock={itemDetail.stock} onAdd={addHandler} />
+                        :
+                        <Link to={"/cart"}><button className='item-det-button'>Terminar mi compra</button></Link>}
+                </div>
+            }
+        </div>
     )
 }
 
